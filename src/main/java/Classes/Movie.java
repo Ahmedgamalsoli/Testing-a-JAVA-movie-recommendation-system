@@ -33,10 +33,6 @@ public class Movie {
         
         // Validate numbers
         if (!numbers.matches("\\d{3}")) return false;
-//        Set<Character> uniqueDigits = new HashSet<>();
-//        for (char c : numbers.toCharArray()) {
-//            if (!uniqueDigits.add(c)) return false;
-//        }
         
         // Validate letters match title initials
         return letters.equals(getTitleInitials(title));
@@ -50,14 +46,6 @@ public class Movie {
             }
         }
         return initials.toString();
-    }
-    public String getFullInfo() {
-        return String.format(
-            "Title: %s\nID: %s\nGenres: %s",
-            title,
-            movieId,
-            String.join(", ", genres)
-        );
     }
 
     // Getters
