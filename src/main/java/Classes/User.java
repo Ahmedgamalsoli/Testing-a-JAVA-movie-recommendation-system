@@ -24,14 +24,6 @@ public class User {
     public static boolean isValidUserId(String userId) {
         return userId.matches("^([0-9]{9})$|^([0-9]{8}[A-Za-z])$");
     }
-    public String getFullInfo() {
-        return String.format(
-            "Name: %s\nID: %s\nLiked Movies: %s",
-            name,
-            userId,
-            String.join(", ", likedMovieIds)
-        );
-    }
 
     // Getters
     public String getName() { return name; }
