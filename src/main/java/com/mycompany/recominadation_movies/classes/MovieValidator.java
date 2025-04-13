@@ -43,7 +43,11 @@ public class MovieValidator {
             if (!isValidMovieId(title, movieId)) {
                 String expected = getTitleInitials(title);
                 String actual = movieId.substring(0, movieId.length()-3);
-                if (!actual.equals(expected)) {
+                if (movieId.length()-expected.length() != 3)
+                {
+                    throw new InputException(String.format("ERROR: Movie Id numbers (%s) aren't 3", movieId));
+                }
+                else if (!actual.equals(expected)) {
                     throw new InputException(String.format("ERROR: Movie Id letters (%s) are wrong", movieId));
                 } else {
                     throw new InputException(String.format("ERROR: Movie Id numbers (%s) aren't unique", movieId));
@@ -51,22 +55,25 @@ public class MovieValidator {
             }
             //we make all genres small letters
             List<String> genres = Arrays.asList(genresLine.split(","));
+            if (genresLine.trim().contains(" ") && !genresLine.contains(",")) {
+                throw new IllegalArgumentException("ERROR: Genres must be comma-separated" + genresLine);
+            }
+
             for (int i = 0; i < genres.size(); i++) {
                 genres.set(i, genres.get(i).trim().toLowerCase());
             }
-
+                
             movies.add(new Movie(title, movieId, genres));
-            
         }
         //Here returns movies which will be used by generateOutput Function
-        return movies;
+        return movies;    
     }
 
-    private boolean isValidTitle(String title) {
+    public static boolean isValidTitle(String title) {
         return title.matches("^([A-Z][a-z]*)(\\s+[A-Z][a-z]*)*$");
     }
 
-    private boolean isValidMovieId(String title, String movieId) {
+    public static boolean isValidMovieId(String title, String movieId) {
         // Split movie ID into letters and numbers
         int splitIndex = movieId.length() - 3;
         if (splitIndex <= 0) return false;
@@ -80,7 +87,7 @@ public class MovieValidator {
         return letters.equals(getTitleInitials(title));
     }
 
-    private String getTitleInitials(String title) {
+    public static String getTitleInitials(String title) {
         StringBuilder initials = new StringBuilder();
         for (String word : title.split(" ")) {
             if (!word.isEmpty()) {
@@ -89,5 +96,4 @@ public class MovieValidator {
         }
         return initials.toString();
     }
-
 }
