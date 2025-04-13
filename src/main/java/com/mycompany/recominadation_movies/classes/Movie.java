@@ -5,8 +5,6 @@
 package Classes;
 
 import java.util.List;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Movie {
     private final String title;
