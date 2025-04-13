@@ -42,10 +42,17 @@ public class UserValidator {
                 throw new InputException(String.format("ERROR: User Id (%s) is wrong", userId));
             }
 
+            if (moviesLine.contains(" ") && !moviesLine.contains(",")) {
+                throw new InputException(String.format("ERROR: Movie Ids of user (%s) must be comma-separated", userId));
+            }
 
             List<String> likedMovies = Arrays.asList(moviesLine.split(","));
             for (int i = 0; i < likedMovies.size(); i++) {
-                likedMovies.set(i, likedMovies.get(i).trim());
+                String LikedMovie = likedMovies.get(i).trim();
+                if (!isValidFormat(LikedMovie)) {
+                throw new InputException(String.format("ERROR: Movie Id (%s) of User Id (%s) is wrong", LikedMovie,userId));
+                }
+                likedMovies.set(i,LikedMovie );
             }
 
             users.add(new User(name, userId, likedMovies));
@@ -53,12 +60,14 @@ public class UserValidator {
         return users;
     }
     
-    private boolean isValidName(String name) {
+    public static boolean isValidName(String name) {
         return name.matches("^[A-Za-z]+(\\s+[A-Za-z]+)*\\s*$") && !name.startsWith(" ");
     }
 
-
-    private boolean isValidUserId(String userId) {
+    public static boolean isValidUserId(String userId) {
         return userId.matches("^([0-9]{9})$|^([0-9]{8}[A-Za-z])$");
+    }
+    public static boolean isValidFormat(String input) {
+        return input.matches("^[A-Z]+\\d{3}$");
     }
 }
