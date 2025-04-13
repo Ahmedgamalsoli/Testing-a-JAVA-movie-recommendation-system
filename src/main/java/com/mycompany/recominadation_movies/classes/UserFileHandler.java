@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author Ahmed Gamal
  */
 public class UserFileHandler {
@@ -22,7 +21,7 @@ public class UserFileHandler {
             while ((line = reader.readLine()) != null) {
                 String moviesLine = reader.readLine();
                 if (moviesLine == null) throw new InputException("Invalid users.txt format");
-                rawData.add(new String[]{line.trim(), moviesLine.trim()});
+                rawData.add(new String[]{line, moviesLine});
         }} 
             catch (IOException e) {
             throw new InputException("ERROR: Unable to read users.txt");
