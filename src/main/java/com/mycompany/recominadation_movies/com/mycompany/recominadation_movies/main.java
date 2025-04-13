@@ -22,7 +22,7 @@ public class main{
 
             List<String[]> User_rawData = UserFileHandler.readUserDataFromFile();           // Step 1
             UserValidator User_validator = new UserValidator(User_rawData);                 // Step 2
-            List<User> users = User_validator.validateUserData();                           // Step 3
+            List<User> users = User_validator.validateUserData();                     // Step 3
             
             Recommendation.generateOutput(users, movies);
 
