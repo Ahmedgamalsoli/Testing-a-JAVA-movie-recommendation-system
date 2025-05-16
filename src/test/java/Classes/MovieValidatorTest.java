@@ -332,8 +332,101 @@ public class MovieValidatorTest {
             assertTrue(movies.get(0).getGenres().contains("drama"));
         }
     }
+/*
+    @Test  
+    void testAllUsePath1(){ // 2 movies 
+        List<String[]> rawData = new ArrayList<>(); 
+        rawData.add(new String[]{"The Godfather,TG002", "Crime,Drama"}); 
+        rawData.add(new String[]{"The Matrix,TM123", ""}); 
+        try (MockedStatic<MovieValidator> mocked = Mockito.mockStatic(MovieValidator.class)) { 
+            mocked.when(() -> MovieValidator.isValidTitle("The Godfather")).thenReturn(true); 
+            mocked.when(() -> MovieValidator.isValidMovieId("The Godfather", "TG002")).thenReturn(true); 
+            mocked.when(() -> MovieValidator.getTitleInitials("The Godfather")).thenReturn("TG"); 
+            mocked.when(() -> MovieValidator.isValidTitle("The Matrix")).thenReturn(true); 
+            mocked.when(() -> MovieValidator.isValidMovieId("The Matrix", "TM123")).thenReturn(true); 
+            mocked.when(() -> MovieValidator.getTitleInitials("The Matrix")).thenReturn("TM"); 
+            
+            MovieValidator validator = new MovieValidator(rawData); 
+            List<Movie> movies = validator.validateMovieData(); 
+            
+            assertEquals(2, movies.size()); 
+            assertEquals("The Godfather", movies.get(0).getTitle()); 
+            assertEquals("TG002", movies.get(0).getMovieId()); 
+            assertTrue(movies.get(0).getGenres().contains("crime")); 
+            assertTrue(movies.get(0).getGenres().contains("drama")); 
+            assertEquals("The Matrix", movies.get(1).getTitle()); 
+            assertEquals("TM123", movies.get(1).getMovieId()); 
+        } 
+    } 
 
+    @Test  
+    void testAllUsePath2 (){ //1 movie no genre 
+        List<String[]> rawData = new ArrayList<>(); 
+        rawData.add(new String[]{"The Godfather,TG002", ""}); 
+         try (MockedStatic<MovieValidator> mocked = Mockito.mockStatic(MovieValidator.class)) { 
+            mocked.when(() -> MovieValidator.isValidTitle("The Godfather")).thenReturn(true); 
+            mocked.when(() -> MovieValidator.isValidMovieId("The Godfather", "TG002")).thenReturn(true); 
+            mocked.when(() -> MovieValidator.getTitleInitials("The Godfather")).thenReturn("TG"); 
+    
+            MovieValidator validator = new MovieValidator(rawData); 
+            List<Movie> movies = validator.validateMovieData(); 
+             
+            assertEquals(1, movies.size()); 
+            assertEquals("The Godfather", movies.get(0).getTitle()); 
+            assertEquals("TG002", movies.get(0).getMovieId()); 
+        } 
+    } 
 
+    @Test  
+    void testAllUsePath3 (){ //Invalid Title 
+        List<String[]> rawData = new ArrayList<>(); 
+        rawData.add(new String[]{"123 Godfather,TG002", ""}); 
+         try (MockedStatic<MovieValidator> mocked = Mockito.mockStatic(MovieValidator.class)) { 
+            mocked.when(() -> MovieValidator.isValidTitle("123 Godfather")).thenReturn(false); 
+            mocked.when(() -> MovieValidator.isValidMovieId("The Godfather", "TG002")).thenReturn(true); 
+            mocked.when(() -> MovieValidator.getTitleInitials("The Godfather")).thenReturn("TG"); 
+             
+            MovieValidator validator = new MovieValidator(rawData); 
+    
+            assertThrows(InputException.class, validator::validateMovieData); 
+        } 
+    } 
+
+    @Test  
+    void testAllUsePath4 (){ //Invalid Movie ID 
+        List<String[]> rawData = new ArrayList<>(); 
+        rawData.add(new String[]{"The Godfather,XYZ", ""}); 
+         try (MockedStatic<MovieValidator> mocked = Mockito.mockStatic(MovieValidator.class)) { 
+            mocked.when(() -> MovieValidator.isValidTitle("The Godfather")).thenReturn(true); 
+            mocked.when(() -> MovieValidator.isValidMovieId("The Godfather", "XYZ")).thenReturn(false); 
+            mocked.when(() -> MovieValidator.getTitleInitials("The Godfather")).thenReturn("TG"); 
+    
+            MovieValidator validator = new MovieValidator(rawData); 
+    
+            assertThrows(InputException.class, validator::validateMovieData); 
+        } 
+    } 
+
+    @Test  
+    void testAllUsePath5 (){ //1 movie with genre 
+        List<String[]> rawData = new ArrayList<>(); 
+        rawData.add(new String[]{"123 Godfather,TG002", "Crime"}); 
+         try (MockedStatic<MovieValidator> mocked = Mockito.mockStatic(MovieValidator.class)) { 
+            mocked.when(() -> MovieValidator.isValidTitle("The Godfather")).thenReturn(true); 
+            mocked.when(() -> MovieValidator.isValidMovieId("The Godfather", "TG002")).thenReturn(true); 
+            mocked.when(() -> MovieValidator.getTitleInitials("The Godfather")).thenReturn("TG"); 
+    
+            MovieValidator validator = new MovieValidator(rawData); 
+            List<Movie> movies = validator.validateMovieData(); 
+    
+            assertEquals(1, movies.size()); 
+            assertEquals("The Godfather", movies.get(0).getTitle()); 
+            assertEquals("TG002", movies.get(0).getMovieId()); 
+            assertTrue(movies.get(0).getGenres().contains("crime")); 
+        } 
+    } 
+*/
+    
     @Test
     void testInvalidTitleFormat() {
         List<String[]> rawData = new ArrayList<>();
