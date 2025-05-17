@@ -426,7 +426,105 @@ public class MovieValidatorTest {
         } 
     } 
 */
-    
+        @Test
+    void testAllDefUse1(){ //Valid 1 movie scenario
+        List<String[]> rawData = new ArrayList<>();
+        rawData.add(new String[]{"The Dark Knight,TDK123", "Action,Drama"});
+
+        try (MockedStatic<MovieValidator> mocked = Mockito.mockStatic(MovieValidator.class)) {
+            mocked.when(() -> MovieValidator.isValidTitle("The Dark Knight")).thenReturn(true);
+            mocked.when(() -> MovieValidator.isValidMovieId("The Dark Knight", "TDK123")).thenReturn(true);
+            mocked.when(() -> MovieValidator.getTitleInitials("The Dark Knight")).thenReturn("TDK");
+
+            MovieValidator validator = new MovieValidator(rawData);
+            List<Movie> movies = validator.validateMovieData();
+
+            assertEquals(1, movies.size());
+            Movie movie = movies.get(0);
+            assertEquals("The Dark Knight", movie.getTitle());
+            assertEquals("TDK123", movie.getMovieId());
+            assertTrue(movie.getGenres().contains("action"));
+            assertTrue(movie.getGenres().contains("drama"));
+        }
+    }
+
+    @Test
+    void testAllDefUse2(){ //Valid 2 movies scenario
+        List<String[]> rawData = new ArrayList<>();
+        rawData.add(new String[]{"The Dark Knight,TDK123", "Action"});
+        rawData.add(new String[]{"Inception,INC456", "Sci-Fi"});
+        
+        try (MockedStatic<MovieValidator> mocked = Mockito.mockStatic(MovieValidator.class)) {
+            mocked.when(() -> MovieValidator.isValidTitle("The Dark Knight")).thenReturn(true);
+            mocked.when(() -> MovieValidator.isValidMovieId("The Dark Knight", "TDK123")).thenReturn(true);
+            mocked.when(() -> MovieValidator.getTitleInitials("The Dark Knight")).thenReturn("TDK");
+
+            mocked.when(() -> MovieValidator.isValidTitle("Inception")).thenReturn(true);
+            mocked.when(() -> MovieValidator.isValidMovieId("Inception", "INC456")).thenReturn(true);
+            mocked.when(() -> MovieValidator.getTitleInitials("Inception")).thenReturn("INC");
+
+            MovieValidator validator = new MovieValidator(rawData);
+            List<Movie> movies = validator.validateMovieData();
+
+            assertEquals(2, movies.size());
+
+            Movie movie1 = movies.get(0);
+            assertEquals("The Dark Knight", movie1.getTitle());
+            assertEquals("TDK123", movie1.getMovieId());
+            assertTrue(movie1.getGenres().contains("action"));
+
+            Movie movie2 = movies.get(1);
+            assertEquals("Inception", movie2.getTitle());
+            assertEquals("INC456", movie2.getMovieId());
+            assertTrue(movie2.getGenres().contains("sci-fi"));
+        }
+    }
+
+
+    @Test
+    void testAllDefUse3(){ //title parts length !=2
+        List<String[]> rawData = new ArrayList<>();
+        rawData.add(new String[]{"The Dark Knight,TDK123", "Action", "random"});
+        
+        try (MockedStatic<MovieValidator> mocked = Mockito.mockStatic(MovieValidator.class)) {
+            mocked.when(() -> MovieValidator.isValidTitle("The Dark Knight")).thenReturn(true);
+            mocked.when(() -> MovieValidator.isValidMovieId("The Dark Knight", "TDK123")).thenReturn(true);
+            mocked.when(() -> MovieValidator.getTitleInitials("The Dark Knight")).thenReturn("TDK");
+
+            MovieValidator validator = new MovieValidator(rawData);
+            assertThrows(InputException.class, validator::validateMovieData);
+        }
+    }
+
+    @Test
+    void testAllDefUse4(){ //None valid title
+        List<String[]> rawData = new ArrayList<>();
+        rawData.add(new String[]{"The dark Knight,TDK123", "Action"});
+        
+        try (MockedStatic<MovieValidator> mocked = Mockito.mockStatic(MovieValidator.class)) {
+            mocked.when(() -> MovieValidator.isValidTitle("The Dark Knight")).thenReturn(true);
+            mocked.when(() -> MovieValidator.isValidMovieId("The Dark Knight", "TDK123")).thenReturn(true);
+            mocked.when(() -> MovieValidator.getTitleInitials("The Dark Knight")).thenReturn("TDK");
+
+            MovieValidator validator = new MovieValidator(rawData);
+            assertThrows(InputException.class, validator::validateMovieData);
+        }
+    }
+
+
+    @Test
+    void testAllDefUse5(){ //Invalid movie ID
+        List<String[]> rawData = new ArrayList<>();
+        rawData.add(new String[]{"The dark Knight,TdK123", "Action"});
+        
+        try (MockedStatic<MovieValidator> mocked = Mockito.mockStatic(MovieValidator.class)) {
+            mocked.when(() -> MovieValidator.isValidTitle("The dark Knight")).thenReturn(true);
+            mocked.when(() -> MovieValidator.isValidMovieId("The dark Knight", "TdK123")).thenReturn(false); // ID is invalid
+
+            MovieValidator validator = new MovieValidator(rawData);
+            assertThrows(InputException.class, validator::validateMovieData);
+        }
+    }
     @Test
     void testInvalidTitleFormat() {
         List<String[]> rawData = new ArrayList<>();
